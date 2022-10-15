@@ -1,2 +1,3 @@
-# Music-reactive-LED-cube-light
-Music reactive LED cube light
+# Music-reactive-matrix-LED-cube
+
+Music reactive matrix LED cube
