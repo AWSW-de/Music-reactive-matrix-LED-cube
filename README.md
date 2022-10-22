@@ -6,7 +6,7 @@ Code for the <a href="https://www.printables.com/de/model/296022-music-reactive-
 
 Demo video:
 
-[![DEMO](https://img.youtube.com/vi/GkMLS1-8Lmg/0.jpg)](https://www.youtube.com/embed/GkMLS1-8Lmg)
+[![DEMO](https://img.youtube.com/vi/vaeDpYg-Tsc/0.jpg)](https://www.youtube.com/embed/vaeDpYg-Tsc)
 
 ⚠️ Important notes: ⚠️ 
 
