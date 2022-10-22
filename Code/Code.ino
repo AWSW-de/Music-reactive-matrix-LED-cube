@@ -1,6 +1,6 @@
 // ###############################################################################################################################
 // #
-// # Code for the printables "Music reactive matrix LED cube + clock" project: https://www.printables.com/de/model/296022-music-reactive-matrix-led-cube
+// # Code for the printables "Music reactive matrix LED cube" project: https://www.printables.com/de/model/296022-music-reactive-matrix-led-cube
 // #
 // # Code by https://github.com/AWSW-de with the use of some code from Adafruit examples. See notes at the end of the code too
 // #
