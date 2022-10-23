@@ -6,7 +6,7 @@
 // #
 // # Released under license: GNU General Public License v3.0: https://github.com/AWSW-de/Music-reactive-matrix-LED-cube/blob/main/LICENSE
 // #
-// # Compatible with code version: V1.0.1
+// # Compatible with code version: V1.0.2
 // #
 // ###############################################################################################################################
 
@@ -38,7 +38,7 @@ void setLanguage(int lang) {
   if (lang == 0) {  // DEUTSCH
     // Allgemeine Texte:
     ProjectName = "LEDCUBE";
-    ProjectNameLong = "Musik reaktiver LED Würfel";
+    ProjectNameLong = "Musik reaktiver Matrix-LED Würfel";
     languageSelect = "Sprache";
     languageInt0 = "Deutsch";
     languageInt1 = "Englisch";
@@ -63,13 +63,13 @@ void setLanguage(int lang) {
 
     // WLAN:
     txtWiFi0 = "WLAN Einstellungen zurücksetzen";
-    txtWiFi1 = "WLAN Einstellungen zurücksetzen und Uhr neu starten?";
-    txtWiFi2 = "Wenn diese Option verwendet wird, werden die WLAN Einstellungen einmalig gelöscht";
+    txtWiFi1 = "WLAN Einstellungen zurücksetzen und neu starten?";
+    txtWiFi2 = "Wenn diese Option verwendet wird, werden die WLAN Einstellungen gelöscht";
 
     // Neustart:
     txtRestart0 = "LEDCUBE neustarten";
     txtRestart1 = "LEDCUBE neustarten?";
-    txtRestart2 = "Wenn diese Option verwendet wird, wird die Uhr einmalig neu gestartet";
+    txtRestart2 = "Wenn diese Option verwendet wird, wird das Gerät neu gestartet";
 
     // VU-meters and animations:
     txtVUandAnm = "Auswahl VU Meter und Animationen";
@@ -106,7 +106,7 @@ void setLanguage(int lang) {
   if (lang == 1) {  // ENGLISH
     // General texts:
     ProjectName = "LEDCUBE";
-    ProjectNameLong = "Music reactive LED cube";
+    ProjectNameLong = "Music reactive matrix LED cube";
     languageSelect = "Language";
     languageInt0 = "German";
     languageInt1 = "English";
@@ -131,13 +131,13 @@ void setLanguage(int lang) {
 
     // WiFi:
     txtWiFi0 = "Reset WiFi settings";
-    txtWiFi1 = "Reset wifi settings and restart watch?";
-    txtWiFi2 = "If this option is used, the WLAN settings will be deleted once";
+    txtWiFi1 = "Reset wifi settings and restart?";
+    txtWiFi2 = "If this option is used, the WLAN settings will be deleted";
 
     // Restart:
     txtRestart0 = "Restart LEDCUBE";
     txtRestart1 = "Restart LEDCUBE?";
-    txtRestart2 = "If this option is used, the clock will be restarted once";
+    txtRestart2 = "If this option is used, the device will be restarted";
 
     // VU-meters and animations:
     txtVUandAnm = "Selection of VU meters and animations";
