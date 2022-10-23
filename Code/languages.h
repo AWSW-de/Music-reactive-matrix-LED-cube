@@ -6,7 +6,7 @@
 // #
 // # Released under license: GNU General Public License v3.0: https://github.com/AWSW-de/Music-reactive-matrix-LED-cube/blob/main/LICENSE
 // #
-// # Compatible with code version: V1.0.2
+// # Compatible with code version: V1.0.3
 // #
 // ###############################################################################################################################
 
@@ -23,9 +23,9 @@ String txtContentStartup, txtUseLEDtest, txtShowIP;
 // Update function:
 String txtUpdate0, txtUpdate2, txtUpdate3, txtUpdate4, txtUpdate5;
 // WiFi:
-String txtWiFi0, txtWiFi1, txtWiFi2;
+String txtWiFi0, txtWiFi1;
 // Restart
-String txtRestart0, txtRestart1, txtRestart2;
+String txtRestart0, txtRestart1;
 // VU-meters and animations:
 String txtVU1, txtVU2, txtVU3, txtVU4, txtVU5, txtVU6, txtVU7, txtVU8, txtVU9, txtAnm1, txtAnm2, txtAnm3, txtVUandAnm;
 String txtVU1lbl, txtVU2lbl, txtVU3lbl, txtVU4lbl, txtVU5lbl, txtVU6lbl, txtVU7lbl, txtVU8lbl, txtVU9lbl, txtAnm1lbl, txtAnm2lbl, txtAnm3lbl;
@@ -64,12 +64,10 @@ void setLanguage(int lang) {
     // WLAN:
     txtWiFi0 = "WLAN Einstellungen zurücksetzen";
     txtWiFi1 = "WLAN Einstellungen zurücksetzen und neu starten?";
-    txtWiFi2 = "Wenn diese Option verwendet wird, werden die WLAN Einstellungen gelöscht";
 
     // Neustart:
     txtRestart0 = "LEDCUBE neustarten";
     txtRestart1 = "LEDCUBE neustarten?";
-    txtRestart2 = "Wenn diese Option verwendet wird, wird das Gerät neu gestartet";
 
     // VU-meters and animations:
     txtVUandAnm = "Auswahl VU Meter und Animationen";
@@ -132,12 +130,10 @@ void setLanguage(int lang) {
     // WiFi:
     txtWiFi0 = "Reset WiFi settings";
     txtWiFi1 = "Reset wifi settings and restart?";
-    txtWiFi2 = "If this option is used, the WLAN settings will be deleted";
 
     // Restart:
     txtRestart0 = "Restart LEDCUBE";
     txtRestart1 = "Restart LEDCUBE?";
-    txtRestart2 = "If this option is used, the device will be restarted";
 
     // VU-meters and animations:
     txtVUandAnm = "Selection of VU meters and animations";

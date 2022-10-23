@@ -38,7 +38,7 @@
 // # Code version:
 // #
 // ###############################################################################################################################
-String code_version = "V1.0.2";
+String code_version = "V1.0.3";
 
 
 // ###############################################################################################################################
@@ -780,16 +780,14 @@ void checkClient() {
             // ############
             client.println("<h2>" + txtRestart0 + ":</h2><br>");
             client.println("<label>" + txtRestart1 + "</label><br>");
-            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/esprestart target='_blank'>" + txtRestart0 + "</a><br>");
-            client.println("<br>! " + txtRestart2 + " !<br><br><hr>");
+            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/esprestart target='_blank'>" + txtRestart0 + "</a><br><br><hr>");
 
             // Reset WiFi configuration:
             // #########################
             client.println("<h2>" + txtWiFi0 + ":</h2><br>");
             client.println("<label>" + txtWiFi1 + "</label><br>");
-            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/espwifireset target='_blank'>" + txtWiFi0 + "</a><br>");
-            client.println("<br>! " + txtWiFi2 + " !<br><br><hr>");
-
+            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/espwifireset target='_blank'>" + txtWiFi0 + "</a><br><br><hr>");
+            
             // Save settings button:
             // #####################
             client.println("<br><br><input type='submit' value='" + txtSaveSettings + "'>");
