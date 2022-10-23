@@ -38,7 +38,7 @@
 // # Code version:
 // #
 // ###############################################################################################################################
-String code_version = "V1.0.0";
+String code_version = "V1.0.1";
 
 
 // ###############################################################################################################################
@@ -57,6 +57,7 @@ String code_version = "V1.0.0";
 #include <Adafruit_NeoPixel.h>        // Used to drive the NeoPixel LEDs
 #include <ESP8266mDNS.h>              // Used for the internal update function
 #include <ESP8266HTTPUpdateServer.h>  // Used for the internal update function
+#include "languages.h"                // Language translations
 
 
 // ###############################################################################################################################
@@ -95,6 +96,7 @@ int useledtest = 1;       // Show start animation and display test at boot
 int buttonCountMAX = 12;  // Max number of switchable functions
 int buttonState = 0;      // Variable for reading the pushbutton status
 int buttonCount = 0;      // Variable for the button presses to switch between the modes
+int switchLangWeb = 0;    // Language default setting (0 = german, 1 = english, 2...x = for future use)
 
 int  // VU meters animation activation default
   useVUA1 = 1,
@@ -174,6 +176,7 @@ struct parmRec {
   int puseVUA18;
   int puseVUA19;
   int puseVUA20;
+  int pswitchLangWeb;
   int pCheckSum;
 } parameter;
 
@@ -248,6 +251,9 @@ void setup() {
   server1->on("/esprestart", ESPRestart);
   server1->on("/espwifireset", ESPWifiReset);
   server1->begin();
+
+  // Load set language:
+  setLanguage(switchLangWeb);
 }
 
 
@@ -476,6 +482,7 @@ void readEEPROM() {
     useVUA18 = parameter.puseVUA18;
     useVUA19 = parameter.puseVUA19;
     useVUA20 = parameter.puseVUA20;
+    switchLangWeb = parameter.pswitchLangWeb;
     intensity = parameter.pIntensity;
   }
 }
@@ -511,6 +518,7 @@ void writeEEPROM() {
   parameter.puseVUA18 = useVUA18;
   parameter.puseVUA19 = useVUA19;
   parameter.puseVUA20 = useVUA20;
+  parameter.pswitchLangWeb = switchLangWeb;
 
   // calculate checksum
   byte* p = (byte*)(void*)&parameter;
@@ -562,7 +570,7 @@ void checkClient() {
             // Display the HTML web page:
             // ##########################
             client.println("<!DOCTYPE html><html>");
-            client.println("<head><title>" + String(WiFi.getHostname()) + " - Music reactive LED cube - Version: " + code_version + "</title><meta charset=\"utf-8\" name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            client.println("<head><title>" + ProjectName + " - " + String(WiFi.getHostname()) + "</title><meta charset=\"utf-8\" name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
             client.println("<link rel=\"icon\" href=\"data:,\">");
             // CSS to style the on/off buttons
             // Feel free to change the background-color and font-size attributes to fit your preferences
@@ -574,7 +582,7 @@ void checkClient() {
 
             // Web Page Heading:
             // #################
-            String title = "<body><h1>Music reactive LED cube - '" + String(WiFi.getHostname()) + "' - Einstellungen - Version: ";
+            String title = "<body><h1>" + ProjectNameLong + " - " + txtSettings + ": ";
             title = title + code_version;
             title = title + "</h1>";
             client.println(title);
@@ -586,16 +594,16 @@ void checkClient() {
             char hex_main[7] = { 0 };
             sprintf(hex_main, "#%02X%02X%02X", redVal, greenVal, blueVal);
             // Main color select:
-            client.println("<hr><h2>LED Einstellungen:</h2><br>");
-            client.println("<label for=\"favcolor\">Farbe: </label>");
+            client.println("<hr><h2>" + txtLEDsettings + ":</h2><br>");
+            client.println("<label for=\"favcolor\">" + txtLEDcolor + ": </label>");
             client.print("<input type=\"color\" id=\"favcolor\" name=\"favcolor\" value=\"");
             client.print(hex_main);
             client.print("\"><br><br>");
 
 
-            // Intensity:  <form method=get>
+            // Intensity:
             // ##############
-            client.print("<label for=\"intensity\">Helligkeit: </label>");
+            client.print("<label for=\"intensity\">" + txtIntensity + ": </label>");
             client.print("<input type='range' min='1' max='255' name='intensity' value=");
             client.print(intensity);                                                               //set the value of the slider based upon the previous page load value
             client.println(" style='height:30px; width:200px' oninput='showValue(this.value)'>");  //was onchange event
@@ -608,8 +616,8 @@ void checkClient() {
 
             // LED display and startup:
             // ########################
-            client.println("<h2>LED Anzeigen und Startverhalten:</h2>");
-            client.println("<label for=\"useledtest\">LED Start Test anzeigen?</label>");
+            client.println("<h2>" + txtContentStartup + ":</h2>");
+            client.println("<label for=\"useledtest\">" + txtUseLEDtest + " </label>");
             client.print("<input type=\"checkbox\" id=\"useledtest\" name=\"useledtest\"");
             if (useledtest) {
               client.print(" checked");
@@ -621,142 +629,170 @@ void checkClient() {
 
             // VU meter and animations:
             // ########################
-            client.println("<h2>Auswahl VU Meter und Animationen:</h2>");
-            client.println("<label for=\"useVUA1\">VU Meter 1: </label>");
+            client.println("<h2>" + txtVUandAnm + ":</h2>");
+            client.println("<label for=\"useVUA1\">" + txtVU1 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA1\" name=\"useVUA1\"");
             if (useVUA1) {
               client.print(" checked");
-              client.print("> VU meter - Lines Coloured<br><br>");
+              client.print("> " + txtVU1lbl + "<br><br>");
             } else {
-              client.print("> VU meter - Lines Coloured<br><br>");
+              client.print("> " + txtVU1lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA2\">VU Meter 2: </label>");
+            client.println("<label for=\"useVUA2\">" + txtVU2 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA2\" name=\"useVUA2\"");
             if (useVUA2) {
               client.print(" checked");
-              client.print("> VU meter - Lines White<br><br>");
+              client.print("> " + txtVU2lbl + "<br><br>");
             } else {
-              client.print("> VU meter - Lines White<br><br>");
+              client.print("> " + txtVU2lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA3\">VU Meter 3: </label>");
+            client.println("<label for=\"useVUA3\">" + txtVU3 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA3\" name=\"useVUA3\"");
             if (useVUA3) {
               client.print(" checked");
-              client.print("> VU meter - Lines with user selected color<br><br>");
+              client.print("> " + txtVU3lbl + "<br><br>");
             } else {
-              client.print("> VU meter - Lines with user selected color<br><br>");
+              client.print("> " + txtVU3lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA4\">VU Meter 4: </label>");
+            client.println("<label for=\"useVUA4\">" + txtVU4 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA4\" name=\"useVUA4\"");
             if (useVUA4) {
               client.print(" checked");
-              client.print("> VU meter - Random LED<br><br>");
+              client.print("> " + txtVU4lbl + "<br><br>");
             } else {
-              client.print("> VU meter - Random LED<br><br>");
+              client.print("> " + txtVU4lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA5\">VU Meter 5: </label>");
+            client.println("<label for=\"useVUA5\">" + txtVU5 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA5\" name=\"useVUA5\"");
             if (useVUA5) {
               client.print(" checked");
-              client.print("> VU meter - Cube Coloured<br><br>");
+              client.print("> " + txtVU5lbl + "<br><br>");
             } else {
-              client.print("> VU meter - Cube Coloured<br><br>");
+              client.print("> " + txtVU5lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA6\">VU Meter 6: </label>");
+            client.println("<label for=\"useVUA6\">" + txtVU6 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA6\" name=\"useVUA6\"");
             if (useVUA6) {
               client.print(" checked");
-              client.print("> VU meter - Cube White<br><br>");
+              client.print("> " + txtVU6lbl + "<br><br>");
             } else {
-              client.print("> VU meter - Cube White<br><br>");
+              client.print("> " + txtVU6lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA7\">VU Meter 7: </label>");
+            client.println("<label for=\"useVUA7\">" + txtVU7 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA7\" name=\"useVUA7\"");
             if (useVUA7) {
               client.print(" checked");
-              client.print("> VU meter - White peak dot<br><br>");
+              client.print("> " + txtVU7lbl + "<br><br>");
             } else {
-              client.print("> VU meter - White peak dot<br><br>");
+              client.print("> " + txtVU7lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA8\">VU Meter 8: </label>");
+            client.println("<label for=\"useVUA8\">" + txtVU8 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA8\" name=\"useVUA8\"");
             if (useVUA8) {
               client.print(" checked");
-              client.print("> VU meter - Coloured peak dot<br><br>");
+              client.print("> " + txtVU8lbl + "<br><br>");
             } else {
-              client.print("> VU meter - Coloured peak dot<br><br>");
+              client.print("> " + txtVU8lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA9\">VU Meter 9: </label>");
+            client.println("<label for=\"useVUA9\">" + txtVU9 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA9\" name=\"useVUA9\"");
             if (useVUA9) {
               client.print(" checked");
-              client.print("> VU meter - No peak dot<br><br>");
+              client.print("> " + txtVU9lbl + "<br><br>");
             } else {
-              client.print("> VU meter - No peak dot<br><br>");
+              client.print("> " + txtVU9lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA17\">Animation 1: </label>");
+            client.println("<label for=\"useVUA17\">" + txtAnm1 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA17\" name=\"useVUA17\"");
             if (useVUA17) {
               client.print(" checked");
-              client.print("> White flickering LED function<br><br>");
+              client.print("> " + txtAnm1lbl + "<br><br>");
             } else {
-              client.print("> White flickering LED function<br><br>");
+              client.print("> " + txtAnm1lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA18\">Animation 2: </label>");
+            client.println("<label for=\"useVUA18\">" + txtAnm2 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA18\" name=\"useVUA18\"");
             if (useVUA18) {
               client.print(" checked");
-              client.print("> Rainbow LED function<br><br>");
+              client.print("> " + txtAnm2lbl + "<br><br>");
             } else {
-              client.print("> Rainbow LED function<br><br>");
+              client.print("> " + txtAnm2lbl + "<br><br>");
             }
 
-            client.println("<label for=\"useVUA19\">Animation 3: </label>");
+            client.println("<label for=\"useVUA19\">" + txtAnm3 + ": </label>");
             client.print("<input type=\"checkbox\" id=\"useVUA19\" name=\"useVUA19\"");
             if (useVUA19) {
               client.print(" checked");
-              client.print("> Flickering rainbow LED function<br><br>");
+              client.print("> " + txtAnm3lbl + "<br><br>");
             } else {
-              client.print("> Flickering rainbow LED function<br><br>");
+              client.print("> " + txtAnm3lbl + "<br><br>");
             }
-
             client.print("<hr>");
 
             // Update function:
             // ################
-            client.println("<h2>Firmware Update:</h2>");
-            client.println("<label>Über einen der folgenden Links kann die Software über den Browser ohne Arduino IDE aktualisiert werden:</label><br><br>");
+            client.println("<h2>" + txtUpdate0 + ":</h2>");
+            client.println("<label>" + txtUpdate2 + ":</label><br><br>");
             client.println("<a href=" + UpdatePath + " target='_blank'>" + UpdatePath + "</a><br><br>");
             client.println("<a href=" + UpdatePathIP + " target='_blank'>" + UpdatePathIP + "</a><br><br>");
-            client.println("<label>Hinweis: Es wird eine in der Arduino IDE mit Strg+Alt+S zuvor erstellte .BIN Datei des Sketches benötigt,<br>die über die Option 'Update Firmware' hochgeladen werden kann.</label><br><hr>");
+            client.println("<label>" + txtUpdate3 + "</label><br>");
+            client.println("<br><br><label>" + txtUpdate4 + ":</label>");
+            client.println("<a href='https://github.com/AWSW-de/Music-reactive-matrix-LED-cube' target='_blank'>" + txtUpdate5 + "</a><br><hr>");
+
+            // Language selection:
+            // ###################
+            client.println("<br><label for=\"switchLangWeb\"><h2>" + languageSelect + ":</h2></label>");
+            client.println("<fieldset>");
+            client.println("<div>");
+            client.println("<input type='radio' id='idlang0' name='switchLangWeb' value='0'");
+            if (switchLangWeb == 0) {
+              client.print(" checked");
+              client.print(">");
+            } else {
+              client.print(">");
+            }
+            client.println("<label for='idlang0'>" + languageInt0 + "</label>");
+            client.println("</div>");
+            client.println("<div>");
+            client.println("<input type='radio' id='idlang1' name='switchLangWeb' value='1'");
+            if (switchLangWeb == 1) {
+              client.print(" checked");
+              client.print(">");
+            } else {
+              client.print(">");
+            }
+            client.println("<label for='idlang1'>" + languageInt1 + "</label>");
+            client.println("</div>");
+            client.println("</fieldset>");
+            client.println("<br><br><hr>");
 
             // ESP restart:
             // ############
-            client.println("<h2>ESP neustarten:</h2><br>");
-            client.println("<label>ESP neu starten?</label><br>");
-            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/esprestart target='_blank'>ESP neu starten</a><br>");
-            client.println("<br>! Wenn diese Option verwendet wird, wird der ESP einmalig neu gestartet !<br><br><hr>");
+            client.println("<h2>" + txtRestart0 + ":</h2><br>");
+            client.println("<label>" + txtRestart1 + "</label><br>");
+            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/esprestart target='_blank'>" + txtRestart0 + "</a><br>");
+            client.println("<br>! " + txtRestart2 + " !<br><br><hr>");
 
             // Reset WiFi configuration:
             // #########################
-            client.println("<h2>WLAN Einstellungen zurücksetzen:</h2><br>");
-            client.println("<label>WLAN Einstellungen zurücksetzen und ESP neu starten?</label><br>");
-            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/espwifireset target='_blank'>WLAN Einstellungen zurücksetzen</a><br>");
-            client.println("<br>! Wenn diese Option verwendet wird, werden die WLAN Einstellungen einmalig gelöscht !<br><br><hr>");
+            client.println("<h2>" + txtWiFi0 + ":</h2><br>");
+            client.println("<label>" + txtWiFi1 + "</label><br>");
+            client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/espwifireset target='_blank'>" + txtWiFi0 + "</a><br>");
+            client.println("<br>! " + txtWiFi2 + " !<br><br><hr>");
 
             // Save settings button:
             // #####################
-            client.println("<br><br><input type=\"submit\" value=\"Einstellungen speichern\">");
+            client.println("<br><br><input type='submit' value='" + txtSaveSettings + "'>");
             client.print("<br><br><br><hr><br>");
             client.println("</form>");
             client.println("</body></html>");
@@ -952,6 +988,19 @@ void checkClient() {
                 useVUA20 = 1;
               } else {
                 useVUA20 = 0;
+              }
+
+
+              // Check for language setting:
+              // ###########################
+              pos = currentLine.indexOf("&switchLangWeb=");
+              if (pos >= 0) {
+                String LangWebStr = currentLine.substring(pos + 15);
+                pos = LangWebStr.indexOf("&");
+                if (pos > 0)
+                  LangWebStr = LangWebStr.substring(0, pos);
+                switchLangWeb = LangWebStr.toInt();
+                setLanguage(switchLangWeb);
               }
 
 
