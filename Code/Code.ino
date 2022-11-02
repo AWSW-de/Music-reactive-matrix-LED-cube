@@ -604,7 +604,7 @@ void checkClient() {
             // Intensity:
             // ##############
             client.print("<label for=\"intensity\">" + txtIntensity + ": </label>");
-            client.print("<input type='range' min='1' max='255' name='intensity' value=");
+            client.print("<input type='range' min='1' max='128' name='intensity' value=");
             client.print(intensity);                                                               //set the value of the slider based upon the previous page load value
             client.println(" style='height:30px; width:200px' oninput='showValue(this.value)'>");  //was onchange event
             client.print("<span id='valrange'>");
