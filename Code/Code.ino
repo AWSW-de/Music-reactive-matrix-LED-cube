@@ -38,7 +38,7 @@
 // # Code version:
 // #
 // ###############################################################################################################################
-String code_version = "V1.0.3";
+String code_version = "V1.0.4";
 
 
 // ###############################################################################################################################
@@ -604,11 +604,11 @@ void checkClient() {
             // Intensity:
             // ##############
             client.print("<label for=\"intensity\">" + txtIntensity + ": </label>");
-            client.print("<input type='range' min='1' max='128' name='intensity' value=");
-            client.print(intensity);                                                               //set the value of the slider based upon the previous page load value
-            client.println(" style='height:30px; width:200px' oninput='showValue(this.value)'>");  //was onchange event
+            client.print("<input type='range' min='1' max='128' name='intensity' value=");         // Limited to 128 to avoid to much power usage of the power supply
+            client.print(intensity);                                                               // set the value of the slider based upon the previous page load value
+            client.println(" style='height:30px; width:200px' oninput='showValue(this.value)'>");  // was onchange event
             client.print("<span id='valrange'>");
-            client.print(intensity);  //set the javascript initial value
+            client.print(intensity);  // set the javascript initial value
             client.println("</span>");
             client.println("<script type='text/javascript'>\r\nfunction showValue(newValue)\r\n{\r\ndocument.getElementById('valrange').innerHTML=newValue;\r\n}\r\n</script>\r\n");
             client.println("</label><br><hr>");
@@ -787,7 +787,7 @@ void checkClient() {
             client.println("<h2>" + txtWiFi0 + ":</h2><br>");
             client.println("<label>" + txtWiFi1 + "</label><br>");
             client.println("<br><a href= http://" + WiFi.localIP().toString() + ":55555/espwifireset target='_blank'>" + txtWiFi0 + "</a><br><br><hr>");
-            
+
             // Save settings button:
             // #####################
             client.println("<br><br><input type='submit' value='" + txtSaveSettings + "'>");

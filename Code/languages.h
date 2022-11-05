@@ -6,7 +6,7 @@
 // #
 // # Released under license: GNU General Public License v3.0: https://github.com/AWSW-de/Music-reactive-matrix-LED-cube/blob/main/LICENSE
 // #
-// # Compatible with code version: V1.0.3
+// # Compatible with code version: V1.0.4
 // #
 // ###############################################################################################################################
 
